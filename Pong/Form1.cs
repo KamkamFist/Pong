@@ -2,11 +2,11 @@ namespace Pong
 {
     public partial class Form1 : Form
     {
-        int ballX = 5; // prêdkoœæ pi³ki w osi X
-        int ballY = 5; // prêdkoœæ pi³ki w osi Y
-        int playerSpeed = 10; // prêdkoœæ paddle gracza
-        int aiSpeed = 5; // prêdkoœæ paddle AI
-        int scorePlayer = 0; // wynik gracza
+        int ballX = 5; 
+        int ballY = 5; 
+        int playerSpeed = 10; 
+        int aiSpeed = 6; 
+        int scorePlayer = 0; 
         int scoreAI = 0; 
 
         public Form1()
@@ -31,39 +31,61 @@ namespace Pong
 
 
 
-        Random rnd = new Random();
+
+
+        private Random rnd = new Random();
+        private int aiDelayCounter = 0; 
+        private int aiDelay = 0; 
 
 
 
 
         private void gameTimer_Tick(object sender, EventArgs e)
         {
-
             label2.Text = scorePlayer.ToString();
-
-            label3.Text = scoreAI.ToString();    
-
-
-            xd += 1;
-            
-
+            label3.Text = scoreAI.ToString();
 
             Ball.Left += ballX;
             Ball.Top += ballY;
 
-            Paddle2.Top = Ball.Top - rnd.Next(1, 100);
-            if (Ball.Top <= 0 || Ball.Bottom >= ClientSize.Height)
-            {
-                ballY = -ballY; 
-            }
+      
+            aiDelayCounter++;
 
-            
-            if (Ball.Bounds.IntersectsWith(Paddle1.Bounds) || Ball.Bounds.IntersectsWith(Paddle2.Bounds))
+  
+            if (aiDelayCounter >= 60) 
             {
-                ballX = -ballX; 
+                aiDelay = rnd.Next(10, 15);
+                aiDelayCounter = 0; 
             }
 
            
+            if (aiDelay > 0)
+            {
+                aiDelay--; 
+            }
+            else
+            {
+                if (Ball.Top < Paddle2.Top && Paddle2.Top > 0)
+                {
+                    Paddle2.Top -= aiSpeed; 
+                }
+                else if (Ball.Bottom > Paddle2.Bottom && Paddle2.Bottom < ClientSize.Height)
+                {
+                    Paddle2.Top += aiSpeed; 
+                }
+            }
+
+         
+            if (Ball.Top <= 0 || Ball.Bottom >= ClientSize.Height)
+            {
+                ballY = -ballY;
+            }
+
+            if (Ball.Bounds.IntersectsWith(Paddle1.Bounds) || Ball.Bounds.IntersectsWith(Paddle2.Bounds))
+            {
+                ballX = -ballX;
+            }
+
             if (Ball.Left <= 0)
             {
                 scoreAI++;
@@ -75,8 +97,8 @@ namespace Pong
                 scorePlayer++;
                 ResetBall();
             }
-
         }
+
         private void ResetBall()
         {
             Ball.Left = (ClientSize.Width / 2) - (Ball.Width / 2); 
