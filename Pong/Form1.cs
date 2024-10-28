@@ -1,16 +1,26 @@
+using Microsoft.VisualBasic.Logging;
+using System.Globalization;
+
 namespace Pong
 {
     public partial class Form1 : Form
     {
-        int ballX = 5; 
-        int ballY = 5; 
+        int ballX = 100; 
+        int ballY = 100; 
         int playerSpeed = 10; 
         int aiSpeed = 6; 
         int scorePlayer = 0; 
         int scoreAI = 0; 
 
-        public Form1()
+
+        private int Pallete;
+        private int kulka;
+
+        public Form1(int pallete, int ball)
         {
+            kulka = ball;
+            Pallete = pallete;
+
             InitializeComponent();
             gameTimer.Start();
         }
@@ -42,6 +52,18 @@ namespace Pong
 
         private void gameTimer_Tick(object sender, EventArgs e)
         {
+
+            if(scorePlayer == 3 || scoreAI == 3)
+            {
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+                gameTimer.Enabled = false;
+
+                zapisywanie();
+
+
+            }
+
             label2.Text = scorePlayer.ToString();
             label3.Text = scoreAI.ToString();
 
@@ -106,6 +128,12 @@ namespace Pong
             ballX = -ballX; 
         }
 
+        void zapisywanie()
+        {
+            var plik = new StreamWriter("wyniki.txt", true);
+            plik.WriteLine($"{scorePlayer}:{scoreAI}:{DateTime.Now.ToBinary()}");
+            plik.Close();
+        }
 
 
 
