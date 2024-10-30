@@ -26,7 +26,7 @@ namespace Pong
         }
         private void OnAppLoad(object sender, EventArgs e)
         {
-            Form1 loginForm = new Form1();
+            Form1 loginForm = new Form1(Pallete, Ball);
             if (loginForm.ShowDialog(this) == DialogResult.OK)
             {
                 this.Show();
@@ -54,10 +54,10 @@ namespace Pong
 
             }
             plik.Close();
-            label2.Text = wyniki[1];
-            label3.Text = wyniki[2];
+            label2.Text = wyniki[wyniki.Count - 1];
+            label3.Text = wyniki[wyniki.Count - 1 - 1];
 
-            label4.Text = wyniki[3];
+            label4.Text = wyniki[wyniki.Count - 3];
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
@@ -67,7 +67,7 @@ namespace Pong
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Form1 loginForm = new Form1();
+            Form1 loginForm = new Form1(Pallete, Ball);
             if (loginForm.ShowDialog(this) == DialogResult.OK)
             {
                 this.Show();

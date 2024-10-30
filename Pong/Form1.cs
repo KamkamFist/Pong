@@ -5,13 +5,12 @@ namespace Pong
 {
     public partial class Form1 : Form
     {
-        int ballX = 100; 
-        int ballY = 100; 
+        int ballX = 10; 
+        int ballY = 10; 
         int playerSpeed = 10; 
         int aiSpeed = 6; 
         int scorePlayer = 0; 
-        int scoreAI = 0; 
-
+        int scoreAI = 0;
 
         private int Pallete;
         private int kulka;
@@ -20,6 +19,18 @@ namespace Pong
         {
             kulka = ball;
             Pallete = pallete;
+
+            if(kulka > 2 && pallete > 0)
+            {
+                ballX = kulka;
+                ballY = kulka;
+                aiSpeed = pallete;
+            }
+            else {
+                ballX = 5;
+                ballY = 5;
+                aiSpeed = 6;
+            }
 
             InitializeComponent();
             gameTimer.Start();
